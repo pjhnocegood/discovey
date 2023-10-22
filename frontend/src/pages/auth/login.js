@@ -70,7 +70,7 @@ const Page = () => {
 
 
 
-      const accountResponse = await proofServiceAPi.get(`v1/proof?platform=${platform}&identity=${identity}`)
+      const accountResponse = await proofServiceAPi.get(`v1/proof?platform=${platform}&identity=${identity}`);
       console.log(accountResponse);
       if (accountResponse && accountResponse.data && accountResponse.data.ids) {
         const avatar = accountResponse.data.ids[0].avatar
