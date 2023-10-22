@@ -21,6 +21,35 @@ router.get('/surveys', async (req, res) => {
   }
 });
 
+
+router.get('/surveys/:avatar', async (req, res) => {
+  const type = req.query.type;
+  console.log("type :"+type)
+  try {
+    const avatar = req.params.avatar; // URL에서 파라미터로 전달된 id 값을 가져옵니다.
+
+    const connection = await mysql.createConnection(dbConfig);
+    let rows=[];
+        if(type === 'my'){
+            [rows] = await connection.execute('select distinct s.* from survey s\n' +
+            'right join survey_answer sa on s.survey_id = sa.survey_id\n' +
+            'where sa.avatar=?', [avatar]);
+        }else if(type === 'buy'){
+            [rows] = await connection.execute('select distinct s.* from survey s\n' +
+            'right join survey_buy sb on s.survey_id = sb.survey_id\n' +
+            'where sb.avatar!=?', [avatar]);
+        }
+
+    connection.end();
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to load data.' });
+  }
+});
+
+
+
 router.get('/surveys/:id/:avatar', async (req, res) => {
     try {
       const surveyId = req.params.id; // URL에서 파라미터로 전달된 id 값을 가져옵니다.
@@ -56,12 +85,9 @@ router.post('/surveys/:id/answer', async (req, res) => {
         await connection.execute('INSERT INTO survey_answer (survey_id,survey_detail_id, answer, avatar)' +
             ' VALUES (?, ?, ?, ?)', [surveyId, answer.surveyDetailId, answer.answer, avatar]);
     });
-    const [rows] =   await connection.execute('SELECT compensation FROM survey where survey_id =? limit 1',[surveyId]);
+    const [rows] = await connection.execute('SELECT compensation FROM survey where survey_id =? limit 1',[surveyId]);
     console.log("rows :"+rows[0].compensation)
     await connection.execute('INSERT INTO token_transfer (ethereum_address, amount) VALUES (?, ?)', [ethereumAddress, +rows[0].compensation]);
-
-
-
     connection.end();
     res.status(201).json({ message: 'Added' });
   } catch (err) {
@@ -80,7 +106,28 @@ router.post('/surveys', async (req, res) => {
     questions.forEach(async (question) => {
         await connection.execute('INSERT INTO survey_detail (survey_id, question) VALUES (?, ?)', [surveyId, question]);
     });
+    connection.end();
+    res.status(201).json({ message: 'Added' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to add' });
+  }
+});
 
+router.post('/surveys/buy', async (req, res) => {
+  const {surveyId, avatar } = req.body;
+  console.log(surveyId)
+  console.log(avatar)
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    await connection.execute('INSERT INTO survey_buy (survey_id, avatar) VALUES (?, ?)', [surveyId, avatar]);
+    const [rows] = await connection.execute('select distinct s.compensation,sa.ethereum_address from survey s\n' +
+        'right join survey_answer sa on s.survey_id = sa.survey_id\n' +
+        'where sa.survey_id=?', [surveyId]);
+  console.log('===============================================')
+    rows.forEach(async (row) => {
+        await connection.execute('INSERT INTO token_transfer (ethereum_address, amount) VALUES (?, ?)', [row.ethereum_address, +row.compensation]);
+    });
 
 
 
