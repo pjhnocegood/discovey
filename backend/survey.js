@@ -37,7 +37,7 @@ router.get('/surveys/:avatar', async (req, res) => {
         }else if(type === 'buy'){
             [rows] = await connection.execute('select distinct s.* from survey s\n' +
             'right join survey_buy sb on s.survey_id = sb.survey_id\n' +
-            'where sb.avatar!=?', [avatar]);
+            'where sb.avatar=?', [avatar]);
         }
 
     connection.end();
