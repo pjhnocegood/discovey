@@ -49,7 +49,7 @@ const changeUserInfo = async ()=>{ }
             sx={{ mt: 2 }}
           >
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained" onClick={changeUserInfo}>
+          <Button variant="contained" onClick={props.oauthGithub}>
             Link
           </Button>
         </CardActions>
