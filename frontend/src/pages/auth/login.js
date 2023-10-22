@@ -52,7 +52,9 @@ const Page = () => {
       await web3auth.connect();
       const provider = web3auth.provider;
       const privateKey = await provider.request({ method: 'eth_private_key' });
-      console.log(privateKey)
+      const userInfo = await web3auth.getUserInfo();
+      console.log(userInfo);
+      sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
 
 
       const secp256k1 = new ec('secp256k1');
@@ -118,7 +120,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Login | Devias Kit
+          Login
         </title>
       </Head>
       <Box

@@ -191,7 +191,7 @@ const Page = () => {
   },[])
 
   const getSurveys = async () => {
-    const response = await nextAPi.get(`surveys/${getAvatar()}?type=my`);
+    const response = await nextAPi.get(`surveys/${getAvatar()}?type=buy`);
     setSurveys(response.data);
   }
 
@@ -233,7 +233,7 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h4">
-                  Participated SURVEY
+                  Purchased SURVEY
                 </Typography>
               </Stack>
             </Stack>

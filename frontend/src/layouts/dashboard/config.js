@@ -29,7 +29,7 @@ export const items = [
   },
   {
     title: 'Notifications',
-    path: '/survey/create',
+    path: '/notifications',
     icon: (
       <SvgIcon fontSize="small">
         <UserPlusIcon />
@@ -65,7 +65,7 @@ export const items = [
   },
   {
     title: 'Discovery',
-    path: '/settings',
+    path: '/discovery',
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
@@ -73,8 +73,8 @@ export const items = [
     )
   },
   {
-    title: 'Discovered Data',
-    path: '/survey/create',
+    title: 'Purchased SURVEY',
+    path: '/purchased',
     icon: (
       <SvgIcon fontSize="small">
         <UserPlusIcon />

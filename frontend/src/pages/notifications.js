@@ -10,10 +10,6 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CustomersTable } from 'src/sections/customer/customers-table';
 import { CustomersSearch } from 'src/sections/customer/customers-search';
 import { applyPagination } from 'src/utils/apply-pagination';
-import { getAvatar } from 'src/utils/storageUtil';
-import { useEffect } from 'react';
-
-import { nextAPi } from '../utils/axiosUtil';
 
 const now = new Date();
 
@@ -184,17 +180,6 @@ const Page = () => {
   const customers = useCustomers(page, rowsPerPage);
   const customersIds = useCustomerIds(customers);
   const customersSelection = useSelection(customersIds);
-  const [surveys, setSurveys] = useState([]);
-
-  useEffect(() => {
-    getSurveys()
-  },[])
-
-  const getSurveys = async () => {
-    const response = await nextAPi.get(`surveys/${getAvatar()}?type=my`);
-    setSurveys(response.data);
-  }
-
 
   const handlePageChange = useCallback(
     (event, value) => {
@@ -233,13 +218,13 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h4">
-                  Participated SURVEY
+                  Notifications
                 </Typography>
               </Stack>
             </Stack>
             <CustomersTable
-              count={surveys.length}
-              items={surveys}
+              count={data.length}
+              items={customers}
               onDeselectAll={customersSelection.handleDeselectAll}
               onDeselectOne={customersSelection.handleDeselectOne}
               onPageChange={handlePageChange}

@@ -9,6 +9,7 @@ import {
   Typography
 } from '@mui/material';
 
+import { getUserInfo } from 'src/utils/storageUtil';
 const user = {
   avatar: '/assets/avatars/avatar-anika-visser.png',
   country: 'USA',
@@ -45,7 +46,7 @@ export const AccountProfile = () => (
           color="text.secondary"
           variant="body2"
         >
-          {user.city} {user.country}
+          {getUserInfo()}
         </Typography>
         <Typography
           color="text.secondary"

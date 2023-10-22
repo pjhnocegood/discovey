@@ -20,4 +20,9 @@ export const getAvatar =  () => {
   return sessionStorage.getItem("avatar");
 }
 
+export const getUserInfo =  () => {
+
+  return sessionStorage.getItem("userInfo");
+}
+
 

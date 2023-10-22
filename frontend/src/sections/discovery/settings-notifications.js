@@ -12,8 +12,22 @@ import {
   Typography,
   Unstable_Grid2 as Grid
 } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { nextAPi } from 'src/utils/axiosUtil';
+
 
 export const SettingsNotifications = () => {
+
+const [surveys, setSurveys] = useState([]);
+
+useEffect(() => {
+  getSurveys()
+},[])
+
+const getSurveys = async () => {
+  const response = await nextAPi.get(`surveys`);
+  setSurveys(response.data);
+}
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
@@ -21,11 +35,20 @@ export const SettingsNotifications = () => {
     []
   );
 
+const buySurvey = async() => {
+  const buydata = {
+    avatar:getAvatar(),
+    surveyId:1
+  }
+
+  const gistResponse = await nextAPi.post('surves/buy',buydata)
+}
+
   return (
     <form onSubmit={handleSubmit}>
       <Card>
         <CardHeader
-          subheader="Select category"
+          subheader="Select survey"
           title="Need category"
         />
         <Divider />
@@ -42,51 +65,18 @@ export const SettingsNotifications = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h6">
-                  Categories
+                  Surveys
                 </Typography>
                 <Stack>
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Gender(2341)"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Github(100)"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="LinkedIn(1003)"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Job(100)"
-                  />
-                </Stack>
-              </Stack>
-            </Grid>
-            <Grid
-              item
-              md={4}
-              sm={6}
-              xs={12}
-            >
-              <Stack spacing={1}>
-                <Typography variant="h6">
-                  Categories
-                </Typography>
-                <Stack>
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Email"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Push Notifications"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Phone calls"
-                  />
+                  {surveys && surveys.map((item) => {
+                    return (
+                      <FormControlLabel
+                        control={<Checkbox />}
+                        label={item.title}
+                        key={item.id}
+                      />
+                    );
+                  })}
                 </Stack>
               </Stack>
             </Grid>
@@ -94,7 +84,7 @@ export const SettingsNotifications = () => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+          <Button variant="contained" onClick={buySurvey}>
             Get
           </Button>
         </CardActions>

@@ -20,7 +20,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Account | Devias Kit
+        Account
       </title>
     </Head>
     <Box

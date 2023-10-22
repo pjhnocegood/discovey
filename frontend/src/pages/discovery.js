@@ -4,11 +4,11 @@ import { SettingsNotifications } from 'src/sections/discovery/settings-notificat
 import { SettingsPassword } from 'src/sections/discovery/settings-password';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 
-const Page = () => (
-  <>
+const Page = () => {
+  return (<>
     <Head>
       <title>
-        Settings | Devias Kit
+        Settings
       </title>
     </Head>
     <Box
@@ -28,7 +28,7 @@ const Page = () => (
       </Container>
     </Box>
   </>
-);
+)};
 
 Page.getLayout = (page) => (
   <DashboardLayout>

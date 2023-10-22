@@ -80,7 +80,7 @@ import { nextAPi } from '../../utils/axiosUtil';
     <>
       <Head>
         <title>
-          Settings | Devias Kit
+          Settings
         </title>
       </Head>
       <Box
