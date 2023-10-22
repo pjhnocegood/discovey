@@ -24,53 +24,249 @@ import {GithubNextId} from "../sections/oauth/githubNextId";
 const now = new Date();
 
 
-const Page = () => {
+const Page = ({oauth}) => {
+  const router = useRouter();
+  const { query } = router;
+  // 특정 쿼리 파라미터 값 가져오기
+  const code = query.code;
+  const [values, setValues] = useState({
+    age: '',
+    gender: '',
+    hobby: '',
+  });
+
+  const [proofChain, setProofChain] = useState({});
+  const [accountInfo, setAccountInfo] = useState({});
+
+  const [user, setUser] = useState({
+    gender: '',
+    age: '',
+    hobby: '',
+    job: '',
+
+    oauth:{
+      githubInfo:{},
+      gitHubInfoSignature:{}
+    }
+  });
+
+  const [prevUser, setPrevUser] = useState();
+
+
+  const handleChange = useCallback(
+    (event) => {
+      setUser((prevState) => ({
+        ...prevState,
+        [event.target.name]: event.target.value
+      }));
+    },
+    []
+  );
+
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+    },
+    []
+  );
+
+  useEffect(() => {
+    async function getAccountInfo() {
+      const platform = 'ethereum';
+      const identity = getEthereumAddress();
+
+      const accountResponse = await proofServiceAPi.get(`v1/proof?platform=${platform}&identity=${identity}`)
+      setAccountInfo(accountResponse.data)
+      const avatar = accountResponse.data.ids[0].avatar
+      const kvdResponse = await kvServiceAPi.get(`v1/kv?avatar=${avatar}`)
+
+      const proofChainResponse = await proofServiceAPi.get(`v1/proofchain?avatar=${avatar}`)
+
+      let gitHubConfirmed = false;
+      let gitHubId = '';
+      proofChainResponse.data.proof_chain.forEach((proofChain) => {
+        if (proofChain.platform === 'github') {
+          gitHubConfirmed = true;
+          gitHubId = proofChain.identity;
+        }
+      })
+      const proofChainData = {
+        gitHubConfirmed: gitHubConfirmed,
+        githubId: gitHubId
+      }
+
+      setProofChain(proofChainData)
+
+      if (kvdResponse.data.proofs[0]?.content !== undefined) {
+        setUser(kvdResponse.data.proofs[0]?.content)
+        setPrevUser(kvdResponse.data.proofs[0]?.content)
+      }else{
+        setPrevUser(user)
+      }
+    }
+    getAccountInfo();
+  }, [])
+
+  useEffect(()=>{
+
+    if(code!==undefined && prevUser!==undefined && oauth === 'discovey'){
+      gitHubIntegrationByKv();
+    }
+  },[prevUser])
+
+  const gitHubIntegrationByKv = async () => {
+
+    const data = {
+      code: code,
+      avatar: accountInfo.ids[0].avatar,
+      ethereumAddress: getEthereumAddress(),
+    }
+    const response = await nextAPi.post('oauth/github/discovey', data
+    )
+    const userInfo = {...prevUser};
+    userInfo.oauth.githubInfo = response.data.githubInfo;
+    userInfo.oauth.gitHubInfoSignature = response.data.gitHubInfoSignature;
+
+    changeUserInfo(userInfo)
+  }
+
+  const oauthGithub = async () => {
+    // GitHub OAuth 로그인 URL 생성
+    // OAuth 로그인을 시작하고 GitHub로 리디렉션
+
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_GITHUB_CLIENT_ID}&scope=user,gist`;
+  }
+
+  const oauthGithubByKv = async () => {
+    // GitHub OAuth 로그인 URL 생성
+    // OAuth 로그인을 시작하고 GitHub으로 리디렉션
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_KV_GITHUB_CLIENT_ID}&scope=user`;
+  }
+
+  const changeUserInfo = async () => {
+    const payloadData = {
+      avatar: accountInfo.ids[0].avatar,
+      identity: accountInfo.ids[0].avatar,
+      platform: "nextid",
+      patch: user,
+    };
+
+    // POST 요청 보내기
+    const payloadResponse = await kvServiceAPi.post('v1/kv/payload', payloadData)
+
+    const patchData = {
+      avatar: accountInfo.ids[0].avatar,
+      identity: accountInfo.ids[0].avatar,
+      platform: "nextid",
+      uuid: payloadResponse.data.uuid,
+      created_at: payloadResponse.data.created_at,
+      signature: await signMessage(payloadResponse.data.sign_payload,getPrivateKey()),
+      patch: user,
+    };
+
+    const patchResponse = await kvServiceAPi.post('v1/kv', patchData)
+
+    alert('개인정보 저장 되었습니다.')
+    router.push('/');
+
+  }
+
   return (
   <>
     <Head>
       <title>
-        Overview
+        Account
       </title>
     </Head>
     <Box
       component="main"
       sx={{
         flexGrow: 1,
+        py: 8
       }}
     >
-      <Container maxWidth="lg">          <Box sx={{ p: 3 }}>
-            <Typography
-              align="center"
-              color="inherit"
-              sx={{
-                fontSize: '24px',
-                lineHeight: '32px',
-                mb: 1
-              }}
-              variant="h1"
+      <Container maxWidth="lg">
+        {(code !==undefined && oauth === 'nextid')  &&   <GithubNextId code={code}></GithubNextId>}
+        <Stack spacing={3}>
+          <div>
+            <Typography variant="h4">
+              Account
+            </Typography>
+          </div>
+          <div>
+            <Grid
+              container
+              spacing={3}
             >
-              Welcome to{' '}
-              <Box
-                component="a"
-                sx={{ color: '#15B79E' }}
-                target="_blank"
+              <Grid
+                xs={12}
+                md={6}
+                lg={4}
               >
-                Discovey
-              </Box>
+                <AccountProfile />
+              </Grid>
+            </Grid>
+          </div>
+        </Stack>
+
+        <div >
+            <Typography variant="h4" sx ={{mt:6}}>
+              Mission
             </Typography>
-            <Typography
-              align="center"
-              sx={{ mb: 3 }}
-              variant="subtitle1"
-            >
-              <br/>
-            <img
-              alt=""
-              width="75%"
-              src="/assets/overview.png"
+          </div>
+        <Grid  sx ={{mt:1}}
+          container
+          spacing={3}
+        >
+          <Grid
+            xs={12}
+            sm={6}
+            lg={3}
+          >
+            <OverviewBudget
+              difference={12}
+              positive
+              sx={{ height: '100%' }}
+              value="10 DOY"
             />
-            </Typography>
-          </Box>
+          </Grid>
+          <Grid
+            xs={12}
+            sm={6}
+            lg={3}
+          >
+            <OverviewTotalProfit
+              sx={{ height: '100%' }}
+              gitHubIntegrationByKv={oauthGithubByKv}
+              value="10 DOY"
+            />
+          </Grid>
+          <Grid
+            xs={12}
+            sm={6}
+            lg={3}
+          >
+            <OverviewTotalCustomers
+              difference={16}
+              oauthGithub={oauthGithub}
+              positive={false}
+              sx={{ height: '100%' }}
+              value="10 DOY"
+            />
+          </Grid>
+          <Grid
+            xs={12}
+            sm={6}
+            lg={3}
+          >
+            <RegisterPush
+              difference={16}
+              positive={false}
+              sx={{ height: '100%' }}
+              value="10 DOY"
+            />
+          </Grid>
+        </Grid>
       </Container>
     </Box>
   </>

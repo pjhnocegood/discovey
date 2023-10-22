@@ -4,9 +4,6 @@ import { Avatar, Card, CardActions, Button, CardContent, Stack, SvgIcon, Typogra
 
 export const OverviewTotalProfit = (props) => {
   const { value, sx } = props;
-  const changeUserInfo = async () => {
-    
-  }
 
   return (
     <Card sx={sx}>
@@ -47,7 +44,7 @@ export const OverviewTotalProfit = (props) => {
             sx={{ mt: 2 }}
           >
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained" onClick={props.gitHubIntegrationByKv}>
+          <Button variant="contained" onClick={() => {alert("Working...")}}>
             Link
           </Button>
         </CardActions>

@@ -9,18 +9,9 @@ import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import { SvgIcon } from '@mui/material';
 
 export const items = [
-  // {
-  //   title: 'Overview',
-  //   path: '/',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <ChartBarIcon />
-  //     </SvgIcon>
-  //   )
-  // },
   {
     title: 'Overview',
-    path: '/',
+    path: '/overview',
     icon: (
       <SvgIcon fontSize="small">
         <UserIcon />
@@ -29,7 +20,7 @@ export const items = [
   },
   {
     title: 'Account',
-    path: '/account',
+    path: '/',
     icon: (
       <SvgIcon fontSize="small">
         <UserIcon />
