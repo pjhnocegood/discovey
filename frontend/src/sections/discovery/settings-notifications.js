@@ -39,7 +39,7 @@ const getSurveys = async () => {
 const buySurvey = async() => {
   const buydata = {
     avatar:getAvatar(),
-    surveyId:1
+    surveyId: 5
   }
 
   const gistResponse = await nextAPi.post('surveys/buy',buydata)

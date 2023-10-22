@@ -6,10 +6,19 @@ import { Avatar,
   Button,
   Card,
   CardActions, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
+  import { PushAPI } from '@pushprotocol/restapi'
+  import { ethers } from 'ethers'
 
 export const RegisterPush = (props) => {
   const { difference, positive = false, sx, value } = props;
-const changeUserInfo = async ()=>{ }
+const changeUserInfo = async ()=>{ 
+  const signer = ethers.Wallet.createRandom()
+  const userAlice = await PushAPI.initialize(signer, { env: 'staging' })
+  const pushChannelAdress = '0xB88460Bb2696CAb9D66013A05dFF29a28330689D'
+  const response = await userAlice.notification.subscribe(
+    `eip155:5:${pushChannelAdress}`
+  );
+}
   return (
     <Card sx={sx}>
       <CardContent>

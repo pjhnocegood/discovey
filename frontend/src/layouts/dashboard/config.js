@@ -19,8 +19,17 @@ export const items = [
   //   )
   // },
   {
-    title: 'Account',
+    title: 'Overview',
     path: '/',
+    icon: (
+      <SvgIcon fontSize="small">
+        <UserIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Account',
+    path: '/account',
     icon: (
       <SvgIcon fontSize="small">
         <UserIcon />

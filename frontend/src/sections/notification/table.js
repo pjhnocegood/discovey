@@ -64,11 +64,11 @@ export const CustomersTable = (props) => {
                 return (
                   <TableRow
                     hover
-                    key={customer.survey_id}
+                    key={customer.id}
                     selected={isSelected}
                   >
                     <TableCell>
-                      {customer.survey_id}
+                      {customer.id}
                     </TableCell>
                     <TableCell>
                       {customer.title}

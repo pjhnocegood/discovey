@@ -22,8 +22,7 @@ export const OverviewTotalProfit = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              LINK
-              GITHUB(DISCOVEY)
+              LINK USER INFO
             </Typography>
             <Typography variant="h4">
               {value}

@@ -50,6 +50,10 @@ const Page = () => {
     await web3auth.initModal();
 
     await web3auth.connect();
+  
+    const userInfo = await web3auth.getUserInfo();
+    sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+
     const provider = web3auth.provider;
     const privateKey = await provider.request({ method: 'eth_private_key' });
     console.log(privateKey)

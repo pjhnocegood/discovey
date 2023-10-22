@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
+import { reduceAddress } from 'src/utils/stringUtil';
 
 export const CustomersTable = (props) => {
   const {
@@ -76,7 +77,7 @@ export const CustomersTable = (props) => {
                     {customer.compensation}
                     </TableCell>
                     <TableCell>
-                    {customer.avatar}
+                    {reduceAddress(customer.avatar, 10,8)}
                     </TableCell>
                   </TableRow>
                 );

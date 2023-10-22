@@ -16,6 +16,21 @@ import { ethers } from 'ethers'
 const now = new Date();
 
 const data = [
+  {
+    id: '1',
+    title: 'Launch DISCOVEY.',
+    compensation: '5 DOY',
+  },
+  {
+    id: '1',
+    title: 'Airdrop!!!',
+    compensation: '1 DOY',
+  },
+  {
+    id: '3',
+    title: 'Just Do It.',
+    compensation: '10 DOY',
+  },
 ];
 
 const useCustomers = (page, rowsPerPage) => {
@@ -93,7 +108,7 @@ const Page = () => {
             </Stack>
             <CustomersTable
               count={data.length}
-              items={customers}
+              items={data}
               onDeselectAll={customersSelection.handleDeselectAll}
               onDeselectOne={customersSelection.handleDeselectOne}
               onPageChange={handlePageChange}
