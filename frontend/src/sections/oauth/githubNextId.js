@@ -5,14 +5,15 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 export const GithubNextId = ({code}) => {
-
+  const router = useRouter();
   useEffect(()=>{
-    gitHubIntegration();
+   gitHubIntegration();
+
   },[])
   async function createGist(avatar) {
 
     try {
-      alert(code)
+
       const data = {
         code :code,
         avatar:avatar,
@@ -32,6 +33,7 @@ export const GithubNextId = ({code}) => {
       const gistData = {
         accessToken :userResponse.data.accessToken,
         fileName:avatar+'.json',
+        ethereumAddress: getEthereumAddress(),
         gistInfo:{
           version: "1",
           comment: "Here's a NextID proof of this Github account.",
@@ -55,10 +57,14 @@ export const GithubNextId = ({code}) => {
         proof_location :  gistResponse.data.id,
         extra:{},
         created_at: payloadResponse.data.created_at,
-        uuid: payloadResponse.data.uuid
+        uuid: payloadResponse.data.uuid,
+
+
       }
 
       await proofServiceAPi.post('v1/proof', githubProofData)
+      router.push('/');
+
       alert('깃허브 연동 되었습니다.')
 
     } catch (error) {

@@ -1,5 +1,5 @@
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   env: {
     REACT_APP_GITHUB_CLIENT_ID: process.env.REACT_APP_GITHUB_CLIENT_ID,
     REACT_APP_GITHUB_CLIENT_SECRET: process.env.REACT_APP_GITHUB_CLIENT_SECRET,
