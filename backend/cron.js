@@ -16,7 +16,6 @@ import {confirm, createTransaction} from "./safe.js";
 const myCronJob = cron.schedule(' */3 * * * *', async  () => {
     // 여기에 1분에 한 번 실행하고자 하는 작업을 넣습니다.
     console.log('Cron 작업이 1분에 한 번 실행되었습니다.');
-
     try {
 
         console.log("connection start")
@@ -35,6 +34,25 @@ const myCronJob = cron.schedule(' */3 * * * *', async  () => {
             }
         }
 
+        connection.end();
+    } catch (err) {
+        console.error(err);
+        console.log(err)
+    }
+
+}, {
+    timezone: 'Asia/Seoul', // 원하는 타임존으로 설정
+});
+const checkTransaction = cron.schedule(' */3 * * * *', async  () => {
+    // 여기에 1분에 한 번 실행하고자 하는 작업을 넣습니다.
+    console.log('Cron 작업이 1분에 한 번 실행되었습니다.');
+    try {
+
+        console.log("connection start")
+        const connection = await mysql.createConnection(dbConfig);
+        console.log("connection")
+        const [rows] = await connection.execute('SELECT * FROM transaction limit 10');
+        console.log(rows)
         connection.end();
     } catch (err) {
         console.error(err);

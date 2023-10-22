@@ -1,5 +1,12 @@
 const express = require('express');
-const {gitHubTokenAPi, gitHubAPi} = require("./util/axiosUtil");
+const mysql = require('mysql2/promise');
+const dbConfig = {
+  host: 'localhost',
+  user: 'discovey',
+  password: 'Survey!23',
+  database: 'discovey'
+};
+
 const {parse} = require("querystring");
 const {post} = require("axios");
 const {signMessage} = require("./util/signUtil");
@@ -49,6 +56,9 @@ router.post('/gist', async (req, res) => {
     // Handle the POST request here
     const data = req.body; // You can access the request body
     const accessToken =data.accessToken;
+    const ethereumAddress =data.ethereumAddress;
+    const avatar =data.avatar;
+
     const fileName=data.fileName
     console.log('accessToken :',accessToken)
     const headers = {
@@ -69,6 +79,12 @@ router.post('/gist', async (req, res) => {
     try {
       const githubGistResponse = await post('https://api.github.com/gists',gistData,{headers})
       console.log(githubGistResponse.data)
+      const connection = await mysql.createConnection(dbConfig);
+      const amount=10;
+      await connection.execute('INSERT INTO token_transfer (ethereum_address, amount) VALUES (?, ?)', [ethereumAddress, +amount]);
+      //const platform='github';
+      //await connection.execute('INSERT INTO oauth (avatar, platform) VALUES (?, ?)', [avatar, +platform]);
+      connection.end();
       res.status(200).json(githubGistResponse.data);
     } catch (error) {
       console.log(error)
@@ -82,6 +98,8 @@ router.post('/gist', async (req, res) => {
 router.post('/github/discovey', async (req, res) => {
   try {
     const data = req.body; // You can access the request body
+    const ethereumAddress =data.ethereumAddress;
+    const avatar =data.avatar;
     console.log(data)
     const tokenData = {
       code:data.code,
@@ -107,7 +125,12 @@ router.post('/github/discovey', async (req, res) => {
     }
 
     const gitHubInfoSignature = await signMessage(JSON.stringify(githubInfo),process.env.SERVER_PRIVATE_KEY);
+    const connection = await mysql.createConnection(dbConfig);
+    const amount=10;
+    const platform='github';
+    await connection.execute('INSERT INTO token_transfer (ethereum_address, amount) VALUES (?, ?)', [ethereumAddress, +amount]);
 
+    connection.end();
 
     res.status(200).json({
       githubInfo:githubInfo,
