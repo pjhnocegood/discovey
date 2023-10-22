@@ -238,6 +238,8 @@ const Page = ({oauth}) => {
             <OverviewTotalProfit
               sx={{ height: '100%' }}
               gitHubIntegrationByKv={oauthGithubByKv}
+
+              user={user}
               value="10 DOY"
             />
           </Grid>
@@ -249,6 +251,8 @@ const Page = ({oauth}) => {
             <OverviewTotalCustomers
               difference={16}
               oauthGithub={oauthGithub}
+              proofChain={proofChain}
+              user={user}
               positive={false}
               sx={{ height: '100%' }}
               value="10 DOY"

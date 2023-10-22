@@ -19,7 +19,7 @@ export const OverviewTotalProfit = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              LINK USER INFO
+              LINK GITHUB(DISCOVEY)
             </Typography>
             <Typography variant="h4">
               {value}
@@ -44,9 +44,15 @@ export const OverviewTotalProfit = (props) => {
             sx={{ mt: 2 }}
           >
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained" onClick={() => {alert("Working...")}}>
-            Link
-          </Button>
+          {props.user.oauth.githubInfo.id===undefined || props.user.oauth.githubInfo.id==='' ?
+            <Button variant="contained" onClick={props.gitHubIntegrationByKv}>
+              Link
+            </Button>
+            :<div>{props.user.oauth.githubInfo.id}</div>
+
+
+          }
+
         </CardActions>
           </Stack>
       </CardContent>
