@@ -108,16 +108,6 @@ const Page = () => (
               value="10 DOY"
             />
           </Grid>
-          <Grid
-            xs={12}
-            sm={6}
-            lg={3}
-          >
-            <OverviewTotalProfit
-              sx={{ height: '100%' }}
-              value="10 DOY"
-            />
-          </Grid>
         </Grid>
       </Container>
     </Box>

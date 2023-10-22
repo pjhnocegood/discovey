@@ -12,6 +12,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Button,
   Typography
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -46,13 +47,13 @@ export const CustomersTable = (props) => {
                   Id
                 </TableCell>
                 <TableCell>
-                  Title
+                  Notification
                 </TableCell>
                 <TableCell>
                   Compensation
                 </TableCell>
                 <TableCell>
-                  Register
+                  Action
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -76,7 +77,9 @@ export const CustomersTable = (props) => {
                     {customer.compensation}
                     </TableCell>
                     <TableCell>
-                    {customer.avatar}
+                    <Button variant="contained"   >
+                      View
+                    </Button>
                     </TableCell>
                   </TableRow>
                 );

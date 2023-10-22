@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { nextAPi } from 'src/utils/axiosUtil';
+import { getAvatar } from 'src/utils/storageUtil';
 
 
 export const SettingsNotifications = () => {
@@ -41,7 +42,7 @@ const buySurvey = async() => {
     surveyId:1
   }
 
-  const gistResponse = await nextAPi.post('surves/buy',buydata)
+  const gistResponse = await nextAPi.post('surveys/buy',buydata)
 }
 
   return (

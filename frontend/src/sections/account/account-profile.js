@@ -18,7 +18,10 @@ const user = {
   timezone: 'GTM-7'
 };
 
-export const AccountProfile = () => (
+export const AccountProfile = () => {
+  const userInfo = JSON.parse(getUserInfo());
+  console.log(userInfo);
+  return (
   <Card>
     <CardContent>
       <Box
@@ -29,7 +32,7 @@ export const AccountProfile = () => (
         }}
       >
         <Avatar
-          src={user.avatar}
+          src={userInfo.profileImage}
           sx={{
             height: 80,
             mb: 2,
@@ -40,23 +43,23 @@ export const AccountProfile = () => (
           gutterBottom
           variant="h5"
         >
-          {user.name}
+          {userInfo.name}
         </Typography>
         <Typography
           color="text.secondary"
           variant="body2"
         >
-          {getUserInfo()}
+          {userInfo.email}
         </Typography>
         <Typography
           color="text.secondary"
           variant="body2"
         >
-          {user.timezone}
+          {userInfo.typeOfLogin}
         </Typography>
       </Box>
     </CardContent>
     <Divider />
 
   </Card>
-);
+)};

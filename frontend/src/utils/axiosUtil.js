@@ -9,7 +9,7 @@ export const proofServiceAPi = axios.create({
   });
 
   export const nextAPi = axios.create({
-    baseURL: "http://localhost:4000/api/",
+    baseURL: "https://discovey.site/api/",
   });
 
   export const gitHubTokenAPi = axios.create({
