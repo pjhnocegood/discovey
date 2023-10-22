@@ -82,8 +82,8 @@ router.post('/surveys/:id/answer', async (req, res) => {
     const connection = await mysql.createConnection(dbConfig);
 
     serveyAnswer.forEach(async (answer) => {
-        await connection.execute('INSERT INTO survey_answer (survey_id,survey_detail_id, answer, avatar,ethereumAddress)' +
-            ' VALUES (?, ?, ?, ?)', [surveyId, answer.surveyDetailId, answer.answer, avatar,ethereumAddress]);
+        await connection.execute('INSERT INTO survey_answer (survey_id,survey_detail_id, answer, avatar,ethereum_address)' +
+            ' VALUES (?, ?, ?, ?,?)', [surveyId, answer.surveyDetailId, answer.answer, avatar,ethereumAddress]);
     });
     const [rows] = await connection.execute('SELECT compensation FROM survey where survey_id =? limit 1',[surveyId]);
     console.log("rows :"+rows[0].compensation)
