@@ -49,9 +49,13 @@ const changeUserInfo = async ()=>{ }
             sx={{ mt: 2 }}
           >
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained" onClick={props.oauthGithub}>
-            Link
-          </Button>
+          {
+            props.proofChain.gitHubConfirmed ?   <div>{ props.proofChain.githubId}  </div>
+              :       <Button variant="contained" onClick={props.oauthGithub}>
+                Link
+              </Button>
+          }
+
         </CardActions>
           </Stack>
       </CardContent>
