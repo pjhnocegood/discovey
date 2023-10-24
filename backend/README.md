@@ -6,4 +6,4 @@ npm intall
 node app.js
 
 #Cron for token transfer.
-node node -r esm cron.js 
+node -r esm cron.js 
