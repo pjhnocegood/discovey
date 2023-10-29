@@ -15,7 +15,8 @@ import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { Layout as DashboardLayout } from '../../layouts/dashboard/layout';
 import { nextAPi } from '../../utils/axiosUtil';
-import { getAvatar, getPublicKey } from '../../utils/storageUtil';
+import {getAvatar, getPublicKey, getSafeAddress} from '../../utils/storageUtil';
+import {transferTokenToDiscovey} from "../../utils/web3Util";
 
 const Page = () => {
   const router = useRouter();
@@ -56,12 +57,13 @@ const Page = () => {
       compensation: survey.compensation,
       max: survey.max,
       questions: textFields,
-      avatar:getAvatar()
+      avatar:getAvatar(),
+      safeAddress: await getSafeAddress()
     }
-    const response =  nextAPi.post('/surveys'
-      + '', surveyData);
+    await transferTokenToDiscovey(survey.compensation * survey.max);
+    const response =  nextAPi.post('/surveys', surveyData);
 
-      console.log(response);
+    console.log(response);
     alert('completed');
     router.push('/survey/list');
 

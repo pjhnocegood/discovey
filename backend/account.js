@@ -9,11 +9,16 @@ const dbConfig = {
   database: 'discovey'
 };
 
-router.get('/', async (req, res) => {
+router.get('/:ethereumAddress', async (req, res) => {
+  const ethereumAddress = req.params.ethereumAddress;
   try {
+
     const connection = await mysql.createConnection(dbConfig);
-    const [rows] = await connection.execute('SELECT * FROM survey');
+    const [rows] = await connection.execute('SELECT * FROM account where ethereum_address = ? limit 1', [ethereumAddress]);
     connection.end();
+    console.log('====================================');
+    console.log(rows[0])
+    console.log('====================================');
     res.json(rows);
   } catch (err) {
     console.error(err);

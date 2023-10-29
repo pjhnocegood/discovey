@@ -97,7 +97,7 @@ router.post('/surveys/:id/answer', async (req, res) => {
 });
 
 router.post('/surveys', async (req, res) => {
-  const {title, compensation, max ,avatar,questions } = req.body;
+  const {title, compensation, max ,avatar,questions,safeAddress } = req.body;
 
   try {
     const connection = await mysql.createConnection(dbConfig);
@@ -106,6 +106,7 @@ router.post('/surveys', async (req, res) => {
     questions.forEach(async (question) => {
         await connection.execute('INSERT INTO survey_detail (survey_id, question) VALUES (?, ?)', [surveyId, question]);
     });
+    await connection.execute('INSERT INTO transaction_safe_request (safe_address) VALUES (?)', [safeAddress]);
     connection.end();
     res.status(201).json({ message: 'Added' });
   } catch (err) {

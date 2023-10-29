@@ -57,12 +57,12 @@ const Page = () => {
     const provider = web3auth.provider;
     const privateKey = await provider.request({ method: 'eth_private_key' });
     console.log(privateKey)
-
+    const web3 = new Web3();
 
     const secp256k1 = new ec('secp256k1');
     const key = secp256k1.keyFromPrivate(privateKey);
     const generatedPublicKey = key.getPublic('hex'); // 16진수 형식의 공개 키
-    const account = Web3.eth.accounts.privateKeyToAccount("0x"+privateKey);
+    const account = web3.eth.accounts.privateKeyToAccount("0x"+privateKey);
     const ethereumAddress = account.address
 
     sessionStorage.setItem('nextPirvateKey', privateKey);
