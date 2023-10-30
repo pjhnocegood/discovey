@@ -21,9 +21,10 @@ jobs:
           uses: actions/setup-node@v2
           with:
             node-version: 20
-            path: ~/backend  # 원하는 경로를 여기에 지정
+        - name: Change Working Directory
+          run: cd backend
         - name: Install Dependencies
-          run: ./backend npm install
+          run: npm install
         - name: Build
           run: npm run build
         - name: Test
