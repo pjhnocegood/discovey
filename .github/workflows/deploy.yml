@@ -23,7 +23,7 @@ jobs:
             node-version: 20
             path: ~/backend  # 원하는 경로를 여기에 지정
         - name: Install Dependencies
-          run: npm install
+          run: ./backend npm install
         - name: Build
           run: npm run build
         - name: Test
