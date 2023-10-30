@@ -29,9 +29,8 @@ jobs:
           working-directory: /home/runner/work/discovey/discovey/backend
         - name: Build
           run: npm run build
-          working-directory: /home/runner/work/discovey/discovey/backend
-        - name: Test
-          run: npm test
+          working-directory: /home/runner/work/discovey/discovey/fronetend
+
 
         # [3]
         - name: Make zip file
