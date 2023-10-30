@@ -22,7 +22,8 @@ jobs:
           with:
             node-version: 20
         - name: Change Working Directory
-          run: cd backend
+          run: cd /home/runner/work/discovey/discovey/backend
+          working-directory: /home/runner/work/discovey/discovey/backend
         - name: Install Dependencies
           run: npm install
         - name: Build
