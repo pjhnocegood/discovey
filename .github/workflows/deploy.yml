@@ -25,7 +25,7 @@ jobs:
           run: cd /home/runner/work/discovey/discovey/backend
           working-directory: /home/runner/work/discovey/discovey/backend
         - name: Install Dependencies
-          run: npm install
+          run: cd backend & npm install
         - name: Build
           run: npm run build
         - name: Test
