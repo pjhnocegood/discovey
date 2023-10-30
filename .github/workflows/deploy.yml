@@ -21,13 +21,15 @@ jobs:
           uses: actions/setup-node@v2
           with:
             node-version: 20
-        - name: Change Working Directory
-          run: cd /home/runner/work/discovey/discovey/backend
-          working-directory: /home/runner/work/discovey/discovey/backend
+        # - name: Change Working Directory
+        #   run: cd /home/runner/work/discovey/discovey/backend
+        #   working-directory: /home/runner/work/discovey/discovey/backend
         - name: Install Dependencies
-          run: cd backend & npm install
+          run: npm install
+          working-directory: /home/runner/work/discovey/discovey/backend
         - name: Build
           run: npm run build
+          working-directory: /home/runner/work/discovey/discovey/backend
         - name: Test
           run: npm test
 
