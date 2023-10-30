@@ -24,12 +24,15 @@ jobs:
         # - name: Change Working Directory
         #   run: cd /home/runner/work/discovey/discovey/backend
         #   working-directory: /home/runner/work/discovey/discovey/backend
-        - name: Install Dependencies
+        - name: Install Dependencies backend
           run: npm install
           working-directory: /home/runner/work/discovey/discovey/backend
+        - name: Install Dependencies frontend
+          run: npm install
+          working-directory: /home/runner/work/discovey/discovey/frontend   
         - name: Build
           run: npm run build
-          working-directory: /home/runner/work/discovey/discovey/fronetend
+          working-directory: /home/runner/work/discovey/discovey/frontend
 
 
         # [3]
