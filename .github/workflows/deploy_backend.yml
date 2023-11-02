@@ -11,10 +11,27 @@ env:
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: pjhnocegood-server
 
 jobs:
+  job_compute_diff:
+    name: Compute file diff
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout current commit (${{ github.sha }})
+      uses: actions/checkout@v3
+    - name: Compute diff
+      uses: dorny/paths-filter@v2
+      id: compute_diff
+      with:
+        filters: |
+          files:
+            - 'packages/A/**'
+    outputs:
+      files: ${{ steps.compute_diff.outputs.files }}
   build:
     runs-on: ubuntu-latest
-
+  
     steps:
+        - name: Deploy if Compute Diff is True
+          if: ${{ needs.job_compute_diff.outputs.files != 'true' }}
         - name: Checkout
           uses: actions/checkout@v2
         - name: Set up Node.js
